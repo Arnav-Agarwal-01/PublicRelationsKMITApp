@@ -1,60 +1,84 @@
-# KMIT Event Manager
+# KMIT PR App
 
-A React Native mobile application for managing college events and club communications at KMIT.
+A comprehensive event management system for KMIT College with separate frontend and backend applications.
 
 ## Project Structure
 
 ```
 kmit-pr-app/
-├── src/
-│   ├── components/     # Reusable UI components
-│   ├── screens/        # Screen components
-│   └── services/       # API and utility services
-├── assets/             # Images, icons, and other assets
-├── App.js              # Main application component
-└── app.json            # Expo configuration
+├── frontend/          # React Native Expo app
+├── backend/           # Node.js Express API server
+└── README.md         # This file
 ```
 
-## Dependencies
+## Quick Start
 
-- **React Native with Expo SDK 53**
-- **Navigation**: @react-navigation/native@^6.x, @react-navigation/stack@^6.x, @react-navigation/bottom-tabs@^6.x
-- **Security**: expo-secure-store@~14.2.3
-- **Calendar**: react-native-calendars@^1.x
-- **UI Components**: react-native-screens, react-native-safe-area-context
+### Prerequisites
+- Node.js (v18+)
+- npm or yarn
+- Expo CLI
+- MongoDB (local or Atlas)
 
-## Getting Started
+### Running the Application
 
-1. Install dependencies:
-   ```bash
-   npm install
-   ```
+**1. Start Backend Server:**
+```bash
+cd backend
+npm install
+npm run dev
+```
+Server runs on: http://localhost:3000
 
-2. Start the development server:
-   ```bash
-   npm start
-   ```
+**2. Start Frontend App:**
+```bash
+cd frontend
+npm install
+npm start
+```
 
-3. Run on specific platforms:
-   ```bash
-   npm run android  # Android
-   npm run ios      # iOS
-   npm run web      # Web
-   ```
+**3. View the App:**
+- Scan QR code with Expo Go app
+- Press `w` for web browser
+- Press `i` for iOS simulator
+- Press `a` for Android emulator
+
+## Features
+
+- **Authentication**: Role-based login (Students, Club Heads, PR Council)
+- **Event Management**: Create, view, and register for college events
+- **Club Management**: Join clubs and manage memberships
+- **Messaging**: College-wide and club-specific announcements
+- **Calendar Integration**: Visual event calendar with registration
+
+## Tech Stack
+
+**Frontend:**
+- React Native with Expo SDK 53
+- React Navigation v6
+- Expo SecureStore for authentication
+- React Native Calendars
+
+**Backend:**
+- Node.js with Express.js
+- MongoDB with Mongoose
+- JWT Authentication
+- bcrypt for password hashing
 
 ## Development
 
-This project is set up with:
-- Latest Expo SDK (53.0.20)
-- All dependencies verified for compatibility
-- Proper project structure for scalable development
-- Ready for React Navigation implementation
+See individual README files in `frontend/` and `backend/` folders for detailed setup instructions.
 
-## Next Steps
+## API Documentation
 
-The project is ready for implementing:
-- Authentication screens
-- Event calendar functionality
-- Club management features
-- Push notifications
-- Backend API integration
+Backend API runs on `http://localhost:3000/api` with endpoints:
+- `/auth` - Authentication
+- `/events` - Event management
+- `/clubs` - Club operations
+- `/messages` - Messaging system
+
+## Contributing
+
+1. Follow the task list in `.kiro/specs/kmit-pr-app/tasks.md`
+2. Implement features incrementally
+3. Test both frontend and backend components
+4. Maintain consistent code style
