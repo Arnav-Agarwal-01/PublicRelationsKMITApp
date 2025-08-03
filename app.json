@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "kmit-pr-app",
+    "name": "KMIT Event Manager",
     "slug": "kmit-pr-app",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -13,17 +13,27 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.kmit.eventmanager"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.kmit.eventmanager"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-secure-store"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "kmit-event-manager"
+      }
     }
   }
 }
