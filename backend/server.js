@@ -17,8 +17,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
-// Import route handlers (will be created in later tasks)
-// const authRoutes = require('./routes/auth');
+// Import route handlers
+const authRoutes = require('./routes/auth');
 // const eventRoutes = require('./routes/events');
 // const clubRoutes = require('./routes/clubs');
 // const userRoutes = require('./routes/users');
@@ -137,7 +137,7 @@ app.get('/api', (req, res) => {
     message: 'KMIT PR App API v1.0',
     endpoints: {
       health: '/health',
-      auth: '/api/auth (coming soon)',
+      auth: '/api/auth',
       events: '/api/events (coming soon)',
       clubs: '/api/clubs (coming soon)',
       users: '/api/users (coming soon)'
@@ -145,8 +145,8 @@ app.get('/api', (req, res) => {
   });
 });
 
-// Route handlers (will be uncommented as routes are implemented)
-// app.use('/api/auth', authRoutes);
+// Route handlers
+app.use('/api/auth', authRoutes);
 // app.use('/api/events', eventRoutes);
 // app.use('/api/clubs', clubRoutes);
 // app.use('/api/users', userRoutes);
@@ -222,9 +222,8 @@ const startServer = async () => {
       throw new Error(`Missing required environment variables: ${missingEnvVars.join(', ')}`);
     }
 
-    // Connect to MongoDB (commented out for initial testing)
-    // await connectDB();
-    console.log('⚠️  MongoDB connection skipped for initial testing');
+    // Connect to MongoDB
+    await connectDB();
 
     // Start the server
     const server = app.listen(PORT, () => {
