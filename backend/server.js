@@ -19,7 +19,7 @@ const cors = require('cors');
 
 // Import route handlers
 const authRoutes = require('./routes/auth');
-// const eventRoutes = require('./routes/events');
+const eventRoutes = require('./routes/events');
 // const clubRoutes = require('./routes/clubs');
 // const userRoutes = require('./routes/users');
 
@@ -138,7 +138,7 @@ app.get('/api', (req, res) => {
     endpoints: {
       health: '/health',
       auth: '/api/auth',
-      events: '/api/events (coming soon)',
+      events: '/api/events',
       clubs: '/api/clubs (coming soon)',
       users: '/api/users (coming soon)'
     }
@@ -147,7 +147,7 @@ app.get('/api', (req, res) => {
 
 // Route handlers
 app.use('/api/auth', authRoutes);
-// app.use('/api/events', eventRoutes);
+app.use('/api/events', eventRoutes);
 // app.use('/api/clubs', clubRoutes);
 // app.use('/api/users', userRoutes);
 
