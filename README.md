@@ -1,84 +1,104 @@
-# KMIT PR App
+# KMIT Events App
 
-A comprehensive event management system for KMIT College with separate frontend and backend applications.
+A modern React Native app for KMIT college events and club management with dual authentication system.
 
-## Project Structure
+## Features
 
-```
-kmit-pr-app/
-├── frontend/          # React Native Expo app
-├── backend/           # Node.js Express API server
-└── README.md         # This file
-```
+- **Dual Authentication**: Student and Council login modes
+- **Modern Dark UI**: Clean, professional interface with green accents
+- **Form Validation**: Real-time validation with user-friendly error messages
+- **Secure Authentication**: JWT-based auth with secure token storage
+- **Production Ready**: Optimized for performance and deployment
 
 ## Quick Start
 
-### Prerequisites
-- Node.js (v18+)
-- npm or yarn
-- Expo CLI
-- MongoDB (local or Atlas)
+### Backend Setup
 
-### Running the Application
-
-**1. Start Backend Server:**
 ```bash
 cd backend
 npm install
-npm run dev
+cp .env.example .env
+# Update .env with your MongoDB URI and JWT secret
+npm start
 ```
-Server runs on: http://localhost:3000
 
-**2. Start Frontend App:**
+### Frontend Setup
+
 ```bash
 cd frontend
 npm install
 npm start
 ```
 
-**3. View the App:**
-- Scan QR code with Expo Go app
-- Press `w` for web browser
-- Press `i` for iOS simulator
-- Press `a` for Android emulator
+### Test Users
 
-## Features
+Run the test user creation script:
 
-- **Authentication**: Role-based login (Students, Club Heads, PR Council)
-- **Event Management**: Create, view, and register for college events
-- **Club Management**: Join clubs and manage memberships
-- **Messaging**: College-wide and club-specific announcements
-- **Calendar Integration**: Visual event calendar with registration
+```bash
+cd backend
+node scripts/createTestUsers.js
+```
+
+**Student Login:**
+- Name: Test Student
+- Roll Number: TEST001
+- Password: Kmit123$
+
+**Council Login:**
+- Name: Test Club Head
+- Club Name: Test Club
+- Password: Councilkmit25
+
+## Project Structure
+
+```
+kmit-pr-app/
+├── backend/                 # Node.js/Express API
+│   ├── models/             # MongoDB models
+│   ├── routes/             # API routes
+│   ├── middleware/         # Auth middleware
+│   └── scripts/            # Utility scripts
+├── frontend/               # React Native app
+│   ├── src/
+│   │   ├── components/     # Reusable components
+│   │   ├── screens/        # App screens
+│   │   ├── services/       # API services
+│   │   ├── theme/          # Design system
+│   │   └── utils/          # Utilities
+│   └── app.config.js       # Expo configuration
+└── README.md
+```
+
+## Key Components
+
+### LoginScreen
+- Dual authentication toggle
+- Form validation
+- Loading states
+- Error handling
+
+### Components
+- **Button**: Haptic feedback, loading states
+- **Input**: Focus states, error display
+- **ToggleSwitch**: Student/Council selection
+
+### Services
+- **authService**: Login, token management
+- **validation**: Form validation utilities
+
+## Production Deployment
+
+1. **Backend**: Deploy to services like Railway, Render, or AWS
+2. **Frontend**: Build with `expo build` or EAS Build
+3. **Environment**: Update API_URL in app.config.js
 
 ## Tech Stack
 
-**Frontend:**
-- React Native with Expo SDK 53
-- React Navigation v6
-- Expo SecureStore for authentication
-- React Native Calendars
+- **Frontend**: React Native, Expo
+- **Backend**: Node.js, Express, MongoDB
+- **Authentication**: JWT, bcrypt
+- **Storage**: Expo SecureStore
 
-**Backend:**
-- Node.js with Express.js
-- MongoDB with Mongoose
-- JWT Authentication
-- bcrypt for password hashing
+## License
 
-## Development
-
-See individual README files in `frontend/` and `backend/` folders for detailed setup instructions.
-
-## API Documentation
-
-Backend API runs on `http://localhost:3000/api` with endpoints:
-- `/auth` - Authentication
-- `/events` - Event management
-- `/clubs` - Club operations
-- `/messages` - Messaging system
-
-## Contributing
-
-1. Follow the task list in `.kiro/specs/kmit-pr-app/tasks.md`
-2. Implement features incrementally
-3. Test both frontend and backend components
-4. Maintain consistent code style
+MIT License - see LICENSE file for details.
