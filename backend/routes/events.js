@@ -16,14 +16,14 @@ const router = express.Router();
 const canManageEvent = async (user, eventId) => {
   // PR council can manage any event
   if (user.role === 'pr_council') return true;
-  
+
   // Club heads can only manage their own club's events
   if (user.role === 'club_head') {
     const event = await Event.findById(eventId).populate('clubId');
     if (!event) return false;
     return event.clubId.clubHead.toString() === user.userId;
   }
-  
+
   return false;
 };
 
@@ -57,18 +57,18 @@ router.get('/', authenticateToken, async (req, res) => {
 router.get('/:date', authenticateToken, async (req, res) => {
   try {
     const date = new Date(req.params.date);
-    
+
     // Get events for this day
     const startOfDay = new Date(date.setHours(0, 0, 0, 0));
     const endOfDay = new Date(date.setHours(23, 59, 59, 999));
-    
+
     const events = await Event.find({
       date: { $gte: startOfDay, $lte: endOfDay }
     })
-    .populate('clubId', 'name')
-    .populate('createdBy', 'name')
-    .populate('registeredUsers', 'name rollNumber')
-    .sort({ startTime: 1 });
+      .populate('clubId', 'name')
+      .populate('createdBy', 'name')
+      .populate('registeredUsers', 'name rollNumber')
+      .sort({ startTime: 1 });
 
     res.json({
       success: true,
@@ -152,7 +152,7 @@ router.post('/', authenticateToken, requireClubHeadOrPR, async (req, res) => {
 router.put('/:id', authenticateToken, requireClubHeadOrPR, async (req, res) => {
   try {
     const eventId = req.params.id;
-    
+
     // Check if user can manage this event
     if (!(await canManageEvent(req.user, eventId))) {
       return res.status(403).json({
@@ -171,7 +171,7 @@ router.put('/:id', authenticateToken, requireClubHeadOrPR, async (req, res) => {
 
     // Update fields if provided
     const { title, description, date, startTime, endTime, venue, maxCapacity } = req.body;
-    
+
     if (title) event.title = title;
     if (description) event.description = description;
     if (date) event.date = new Date(date);
@@ -204,7 +204,7 @@ router.put('/:id', authenticateToken, requireClubHeadOrPR, async (req, res) => {
 router.delete('/:id', authenticateToken, requireClubHeadOrPR, async (req, res) => {
   try {
     const eventId = req.params.id;
-    
+
     // Check if user can manage this event
     if (!(await canManageEvent(req.user, eventId))) {
       return res.status(403).json({
