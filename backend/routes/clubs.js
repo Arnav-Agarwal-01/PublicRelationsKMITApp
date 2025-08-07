@@ -12,6 +12,42 @@ const { authenticateToken, requireClubHeadOrPR, requireStudent } = require('../m
 
 const router = express.Router();
 
+/**
+ * GET /api/clubs/my-clubs
+ * Get clubs that the current user is a member of
+ * NOTE: This route must be defined before /:id to avoid conflicts
+ */
+router.get('/my-clubs', authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    
+    const clubs = await Club.find({ 
+      members: userId,
+      isActive: true 
+    })
+    .populate('clubHead', 'name rollNumber')
+    .select('name description category brandColor logoUrl establishedYear clubHead memberCount isActive createdAt');
+
+    res.json({
+      success: true,
+      message: 'User clubs retrieved successfully',
+      data: {
+        clubs: clubs,
+        totalCount: clubs.length
+      }
+    });
+  } catch (error) {
+    console.error('Error getting user clubs:', error);
+    res.status(500).json({
+      success: false,
+      error: {
+        code: 'SERVER_ERROR',
+        message: 'Error retrieving user clubs'
+      }
+    });
+  }
+});
+
 // Helper function to check if user can manage this club
 const canManageClub = async (user, clubId) => {
   // PR council can manage any club
@@ -454,41 +490,6 @@ router.delete('/:id/remove-member', authenticateToken, requireClubHeadOrPR, asyn
       error: {
         code: 'SERVER_ERROR',
         message: 'Error removing member'
-      }
-    });
-  }
-});
-
-/**
- * GET /api/clubs/my-clubs
- * Get clubs that the current user is a member of
- */
-router.get('/my-clubs', authenticateToken, async (req, res) => {
-  try {
-    const userId = req.user.userId;
-    
-    const clubs = await Club.find({ 
-      members: userId,
-      isActive: true 
-    })
-    .populate('clubHead', 'name rollNumber')
-    .select('name description category brandColor logoUrl establishedYear clubHead memberCount isActive createdAt');
-
-    res.json({
-      success: true,
-      message: 'User clubs retrieved successfully',
-      data: {
-        clubs: clubs,
-        totalCount: clubs.length
-      }
-    });
-  } catch (error) {
-    console.error('Error getting user clubs:', error);
-    res.status(500).json({
-      success: false,
-      error: {
-        code: 'SERVER_ERROR',
-        message: 'Error retrieving user clubs'
       }
     });
   }
