@@ -22,6 +22,7 @@ const authRoutes = require('./routes/auth');
 const eventRoutes = require('./routes/events');
 const clubRoutes = require('./routes/clubs');
 const hallOfFameRoutes = require('./routes/hallOfFame');
+const messageRoutes = require('./routes/messages');
 // const userRoutes = require('./routes/users');
 
 const app = express();
@@ -142,6 +143,7 @@ app.get('/api', (req, res) => {
       events: '/api/events',
       clubs: '/api/clubs',
       hallOfFame: '/api/hall-of-fame',
+      messages: '/api/messages',
       users: '/api/users (coming soon)'
     }
   });
@@ -152,6 +154,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/clubs', clubRoutes);
 app.use('/api/hall-of-fame', hallOfFameRoutes);
+app.use('/api/messages', messageRoutes);
 // app.use('/api/users', userRoutes);
 
 /**
