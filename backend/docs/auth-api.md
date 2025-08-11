@@ -2,10 +2,10 @@
 
 ## Overview
 
-The authentication system supports three types of users:
-- **Students**: Login with name + roll number + password
-- **Club Heads**: Login with name + club name + password  
-- **PR Council**: Login with name + club name + password
+The authentication system supports three types of users with simplified login:
+- **Students**: Login with roll number + initial password "PR123$"
+- **Club Heads**: Login with club name + initial password "PR123$"  
+- **PR Council**: Login with "PR COUNCIL" + initial password "PR123$"
 
 ## Endpoints
 
@@ -16,30 +16,36 @@ Authenticates users and returns a JWT token.
 **Request Body:**
 ```json
 {
-  "name": "User Name",
-  "rollNumber": "ROLL001",  // For students only
-  "clubName": "Club Name",  // For council members only
-  "password": "password123",
-  "userType": "student"     // "student" or "council"
+  "rollNumber": "21A91A0501",  // For students only
+  "clubName": "SAIL",          // For council members only
+  "password": "PR123$",        // Initial password for all users
+  "userType": "student"        // "student" or "council"
 }
 ```
 
 **Student Login Example:**
 ```json
 {
-  "name": "Test Student",
-  "rollNumber": "TEST001",
-  "password": "Kmit123$",
+  "rollNumber": "21A91A0501",
+  "password": "PR123$",
   "userType": "student"
 }
 ```
 
-**Council Login Example:**
+**Club Head Login Example:**
 ```json
 {
-  "name": "Test Club Head",
-  "clubName": "Test Club",
-  "password": "Councilkmit25",
+  "clubName": "SAIL",
+  "password": "PR123$",
+  "userType": "council"
+}
+```
+
+**PR Council Login Example:**
+```json
+{
+  "clubName": "PR COUNCIL",
+  "password": "PR123$",
   "userType": "council"
 }
 ```
@@ -131,13 +137,16 @@ Authorization: Bearer <jwt_token>
 ## Authentication Flow
 
 ### Initial Login
-1. Users start with default passwords:
-   - Students: `"Kmit123$"`
-   - Council: `"Councilkmit25"`
+1. All users start with the same initial password: `"PR123$"`
 
-2. On first login, users must change their password
+2. Login credentials:
+   - **Students**: Roll number (e.g., "21A91A0501") + "PR123$"
+   - **Club Heads**: Club name (e.g., "SAIL") + "PR123$"
+   - **PR Council**: "PR COUNCIL" + "PR123$"
 
-3. JWT tokens expire after 45 days (1.5 months)
+3. Users can change their password after login using the change-password endpoint
+
+4. JWT tokens expire after 45 days (1.5 months)
 
 ### Using Protected Endpoints
 1. Include JWT token in Authorization header:
@@ -171,10 +180,31 @@ Authorization: Bearer <jwt_token>
 curl -X POST http://localhost:3000/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{
-    "name": "Test Student",
-    "rollNumber": "TEST001", 
-    "password": "Kmit123$",
+    "rollNumber": "21A91A0501", 
+    "password": "PR123$",
     "userType": "student"
+  }'
+```
+
+### Club Head Login
+```bash
+curl -X POST http://localhost:3000/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "clubName": "SAIL",
+    "password": "PR123$",
+    "userType": "council"
+  }'
+```
+
+### PR Council Login
+```bash
+curl -X POST http://localhost:3000/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "clubName": "PR COUNCIL",
+    "password": "PR123$",
+    "userType": "council"
   }'
 ```
 
@@ -184,7 +214,7 @@ curl -X POST http://localhost:3000/api/auth/change-password \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_JWT_TOKEN" \
   -d '{
-    "currentPassword": "Kmit123$",
+    "currentPassword": "PR123$",
     "newPassword": "MyNewPassword123!"
   }'
 ```

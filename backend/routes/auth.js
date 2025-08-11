@@ -22,22 +22,22 @@ const router = express.Router();
  * POST /api/auth/login
  * 
  * Handles login for both students and council members
- * Students: name + rollNumber + password
- * Council: name + clubName + password
+ * Students: rollNumber + password (PR123$)
+ * Council: clubName + password (PR123$)
  * 
  * Requirements: 1.1, 1.3, 3.1, 3.2
  */
 router.post('/login', async (req, res) => {
   try {
-    const { name, rollNumber, clubName, password, userType } = req.body;
+    const { rollNumber, clubName, password, userType } = req.body;
 
     // Validate required fields
-    if (!name || !password || !userType) {
+    if (!password || !userType) {
       return res.status(400).json({
         success: false,
         error: {
           code: 'MISSING_FIELDS',
-          message: 'Name, password, and user type are required'
+          message: 'Password and user type are required'
         }
       });
     }
@@ -67,14 +67,12 @@ router.post('/login', async (req, res) => {
     let user;
     if (userType === 'student') {
       user = await User.findOne({ 
-        name: name.trim(),
-        rollNumber: rollNumber.trim(),
+        rollNumber: rollNumber.trim().toUpperCase(),
         role: 'student'
       });
     } else if (userType === 'council') {
       user = await User.findOne({ 
-        name: name.trim(),
-        clubName: clubName.trim(),
+        clubName: clubName.trim().toUpperCase(),
         role: { $in: ['club_head', 'pr_council'] }
       });
     }
